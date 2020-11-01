@@ -39,6 +39,7 @@ fn main() {
         // Boxes for organizing widgets
         let vbox = Box::new(Vertical, 0);
         let hbox = Box::new(Horizontal, 0);
+        let infobox = Box::new(Horizontal, 0);
 
         // Buttons
         let toggle = Button::with_label("toggle");
@@ -64,15 +65,16 @@ fn main() {
         entry.set_overwrite_mode(false);
         entry.set_has_frame(false);
         entry.set_activates_default(false);
-        entry.set_width_chars(30);
+        entry.set_alignment(0.5);
 
         // Actually use the boxes
         hbox.pack_start(&prev, true, false, 2);
         hbox.pack_start(&toggle, true, false, 2);
         hbox.pack_start(&next, true, false, 2);
-        hbox.pack_start(&entry, true, false, 2);
-        vbox.pack_start(&hbox, false, false, 0);
+        infobox.pack_start(&entry, true, true, 2);
+        vbox.pack_start(&infobox, true, true, 2);
         vbox.pack_start(&image, true, true, 0);
+        vbox.pack_start(&hbox, false, false, 0);
 
         // Display in window
         win.add(&vbox);
