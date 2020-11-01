@@ -2,7 +2,7 @@ extern crate gio;
 extern crate gtk;
 
 use gio::prelude::*;
-use gtk::{Box, Button, InfoBar, Orientation::{Horizontal, Vertical}, prelude::*};
+use gtk::{Box, Button, Orientation::{Horizontal, Vertical}, prelude::*};
 use mpd::{Client, Song};
 use std::env;
 
@@ -58,23 +58,21 @@ fn main() {
         let image = gtk::Image::from_file("/tmp/cover.png");
 
         // Music info
-        let bar = InfoBar::new();
         let info = info();
         let entry = gtk::Entry::new();
         entry.set_text(&info);
         entry.set_overwrite_mode(false);
         entry.set_has_frame(false);
         entry.set_activates_default(false);
-        entry.grab_focus();
-        bar.add_action_widget(&entry, gtk::ResponseType::None);
+        entry.set_width_chars(30);
 
         // Actually use the boxes
         hbox.pack_start(&prev, true, false, 2);
         hbox.pack_start(&toggle, true, false, 2);
         hbox.pack_start(&next, true, false, 2);
-        vbox.pack_start(&bar, false, false, 0);
-        vbox.pack_start(&image, false, false, 0);
+        hbox.pack_start(&entry, true, false, 2);
         vbox.pack_start(&hbox, false, false, 0);
+        vbox.pack_start(&image, true, true, 0);
 
         // Display in window
         win.add(&vbox);
