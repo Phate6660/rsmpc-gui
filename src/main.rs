@@ -2,7 +2,7 @@ extern crate gio;
 extern crate gtk;
 
 use gio::prelude::*;
-use gtk::{Button, Orientation::Horizontal, prelude::*};
+use gtk::{Box, Button, Orientation::{Horizontal, Vertical}, prelude::*};
 use mpd::Client;
 use std::env;
 
@@ -28,7 +28,9 @@ fn main() {
         let win = gtk::ApplicationWindow::new(app);
         win.set_title("rsmpc-gui");
 
-        let hbox = gtk::Box::new(Horizontal, 5);
+        // Boxes for grouping content
+        let vbox = Box::new(Vertical, 5);
+        let hbox = Box::new(Horizontal, 5);
 
         // Buttons
         let toggle = Button::with_label("toggle");
@@ -43,12 +45,19 @@ fn main() {
         prev.connect_clicked(|_| {
             control("prev");
         });
+
+        // Cover art
+        let image = gtk::Image::from_file("/tmp/cover.png");
+
+        // Actually use the boxes
         hbox.pack_start(&prev, true, false, 2);
         hbox.pack_start(&toggle, true, false, 2);
         hbox.pack_start(&next, true, false, 2);
-        win.add(&hbox);
+        vbox.pack_start(&image, false, false, 2);
+        vbox.pack_start(&hbox, false, false, 2);
 
         // Don't forget to make all widgets visible.
+        win.add(&vbox);
         win.show_all();
     });
     uiapp.run(&env::args().collect::<Vec<_>>());
